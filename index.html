@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>terminal — steel.dev</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-theme="dark" data-bg="image">
+    <main class="wrap">
+      <div class="controls" role="group" aria-label="Controls">
+        <div class="theme-toggle" role="group" aria-label="Theme">
+          <button type="button" class="toggle" data-theme="dark">Dark</button>
+          <button type="button" class="toggle" data-theme="light">Light</button>
+        </div>
+        <div class="view-toggle" role="group" aria-label="View">
+          <button type="button" class="toggle view-btn active" data-view="cli">CLI</button>
+          <button type="button" class="toggle view-btn" data-view="ide">IDE</button>
+        </div>
+        <div class="size-toggle" role="group" aria-label="Font size">
+          <button type="button" class="toggle size-btn" data-size="down" aria-label="Decrease font size">-</button>
+          <button type="button" class="toggle size-btn" data-size="up" aria-label="Increase font size">+</button>
+        </div>
+        <div class="ratio-toggle" role="group" aria-label="Resize ratio">
+          <button type="button" class="toggle ratio-btn" data-ratio="3:4">3:4</button>
+          <button type="button" class="toggle ratio-btn" data-ratio="1:1">1:1</button>
+          <button type="button" class="toggle ratio-btn" data-ratio="16:9">16:9</button>
+        </div>
+        <div class="bg-select-wrap" role="group" aria-label="Background preset">
+          <select id="bg-select" class="bg-select" aria-label="Background preset">
+            <option value="bg-1.png">bg-1.png</option>
+          </select>
+        </div>
+        <label class="bg-upload" for="bg-input">Background</label>
+        <input id="bg-input" class="bg-input" type="file" accept="image/*" />
+      </div>
+      <section class="panel">
+        <header class="titlebar">
+          <div class="traffic">
+            <span class="dot red" aria-hidden="true"></span>
+            <span class="dot yellow" aria-hidden="true"></span>
+            <span class="dot green" aria-hidden="true"></span>
+          </div>
+          <div class="title">terminal — steel.dev</div>
+        </header>
+
+        <pre class="terminal view view-cli is-active" role="textbox" aria-label="Terminal content" contenteditable="true" spellcheck="false"></pre>
+
+        <div class="ide view view-ide" role="textbox" aria-label="IDE content">
+          <div class="ide-tabs">
+            <span class="tab active" contenteditable="true" spellcheck="false">main.rs</span>
+            <span class="tab" contenteditable="true" spellcheck="false">lib.rs</span>
+            <span class="tab" contenteditable="true" spellcheck="false">README.md</span>
+          </div>
+          <div class="ide-body">
+            <div class="ide-gutter">
+              <span>1</span>
+              <span>2</span>
+              <span>3</span>
+              <span>4</span>
+              <span>5</span>
+              <span>6</span>
+              <span>7</span>
+              <span>8</span>
+              <span>9</span>
+              <span>10</span>
+            </div>
+            <pre class="ide-editor" contenteditable="true" spellcheck="false">fn main() {
+    println!("hello, steel.dev");
+}
+
+// rust + nvim style
+struct App {
+    name: String,
+}
+
+fn greet(app: App) {
+    println!("welcome {}", app.name);
+}</pre>
+          </div>
+          <div class="ide-status">
+            <span>normal</span>
+            <span>utf-8</span>
+            <span>Ln 1, Col 1</span>
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <script>
+      const themeButtons = document.querySelectorAll('.toggle[data-theme]');
+      const body = document.body;
+      const bgInput = document.getElementById('bg-input');
+      const bgSelect = document.getElementById('bg-select');
+      const panel = document.querySelector('.panel');
+      const titlebar = document.querySelector('.titlebar');
+      const terminal = document.querySelector('.terminal');
+      const sizeButtons = document.querySelectorAll('.size-btn');
+      const ratioButtons = document.querySelectorAll('.ratio-btn');
+      const viewButtons = document.querySelectorAll('.view-btn');
+      const cliView = document.querySelector('.view-cli');
+      const ideView = document.querySelector('.view-ide');
+      const ideEditor = document.querySelector('.ide-editor');
+      const ideGutter = document.querySelector('.ide-gutter');
+      let fontSize = 18;
+
+      const initialTerminal = [
+        'Last login: <span id="login-time"></span> on Mars',
+        '<span class="p-path">~/dev/term-sim</span>',
+        '<span class="p-symbol">❯</span> <span class="p-command">_</span>',
+      ].join('\n');
+
+      terminal.innerHTML = initialTerminal;
+
+      const loginTime = document.getElementById('login-time');
+
+      function formatLoginTime(date) {
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const day = days[date.getDay()];
+        const month = months[date.getMonth()];
+        const dayNum = String(date.getDate()).padStart(2, ' ');
+        const hh = String(date.getHours()).padStart(2, '0');
+        const mm = String(date.getMinutes()).padStart(2, '0');
+        const ss = String(date.getSeconds()).padStart(2, '0');
+        return `${day} ${month} ${dayNum} ${hh}:${mm}:${ss}`;
+      }
+
+      function updateLoginTime() {
+        if (!loginTime) return;
+        loginTime.textContent = formatLoginTime(new Date());
+      }
+
+      updateLoginTime();
+      setInterval(updateLoginTime, 1000);
+
+      function applyFontSize() {
+        terminal.style.fontSize = `${fontSize}px`;
+        if (ideEditor) {
+          ideEditor.style.fontSize = `${Math.max(12, fontSize - 4)}px`;
+        }
+      }
+
+      sizeButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (btn.dataset.size === 'up') {
+            fontSize = Math.min(24, fontSize + 1);
+          } else {
+            fontSize = Math.max(10, fontSize - 1);
+          }
+          applyFontSize();
+        });
+      });
+
+      applyFontSize();
+
+      let activeRatio = '16:9';
+
+      function applyRatio(ratio) {
+        const [w, h] = ratio.split(':').map(Number);
+        const maxWidth = Math.min(window.innerWidth * 0.9, 1000);
+        const maxHeight = window.innerHeight * 0.7;
+        const ratioValue = w / h;
+        let width = maxWidth;
+        let height = width / ratioValue;
+        if (height > maxHeight) {
+          height = maxHeight;
+          width = height * ratioValue;
+        }
+        panel.style.width = `${Math.round(width)}px`;
+        panel.style.height = `${Math.round(height)}px`;
+      }
+
+      ratioButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          ratioButtons.forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeRatio = btn.dataset.ratio;
+          applyRatio(activeRatio);
+        });
+      });
+
+      const defaultRatio = document.querySelector('.ratio-btn[data-ratio="16:9"]');
+      if (defaultRatio) {
+        defaultRatio.classList.add('active');
+        activeRatio = '16:9';
+        applyRatio(activeRatio);
+      }
+      window.addEventListener('resize', () => applyRatio(activeRatio));
+
+      function setTheme(theme) {
+        body.setAttribute('data-theme', theme);
+        themeButtons.forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.theme === theme);
+        });
+      }
+
+      themeButtons.forEach((btn) => {
+        btn.addEventListener('click', () => setTheme(btn.dataset.theme));
+      });
+
+      setTheme('dark');
+
+      bgInput.addEventListener('change', (event) => {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+        const url = URL.createObjectURL(file);
+        body.style.setProperty('--bg-image', `url("${url}")`);
+        body.setAttribute('data-bg', 'image');
+      });
+
+      function setBackground(src) {
+        body.style.setProperty('--bg-image', `url("${src}")`);
+        body.setAttribute('data-bg', 'image');
+      }
+
+      bgSelect.addEventListener('change', (event) => {
+        setBackground(event.target.value);
+      });
+
+      function tryAddBackgrounds() {
+        const max = 12;
+        const existing = new Set(Array.from(bgSelect.options).map((opt) => opt.value));
+        for (let i = 2; i <= max; i += 1) {
+          const name = `bg-${i}.png`;
+          if (existing.has(name)) continue;
+          const img = new Image();
+          img.onload = () => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            bgSelect.appendChild(option);
+          };
+          img.onerror = () => {};
+          img.src = name;
+        }
+      }
+
+      tryAddBackgrounds();
+
+      function setView(view) {
+        viewButtons.forEach((btn) => btn.classList.toggle('active', btn.dataset.view === view));
+        if (view === 'ide') {
+          ideView.classList.add('is-active');
+          cliView.classList.remove('is-active');
+        } else {
+          cliView.classList.add('is-active');
+          ideView.classList.remove('is-active');
+        }
+      }
+
+      viewButtons.forEach((btn) => {
+        btn.addEventListener('click', () => setView(btn.dataset.view));
+      });
+
+      function updateIdeGutter() {
+        if (!ideEditor || !ideGutter) return;
+        const lines = ideEditor.innerText.replace(/\n$/, '').split('\n').length || 1;
+        ideGutter.innerHTML = '';
+        for (let i = 1; i <= lines; i += 1) {
+          const span = document.createElement('span');
+          span.textContent = i;
+          ideGutter.appendChild(span);
+        }
+      }
+
+      if (ideEditor) {
+        ideEditor.addEventListener('input', updateIdeGutter);
+        updateIdeGutter();
+      }
+
+      let isDragging = false;
+      let startX = 0;
+      let startY = 0;
+      let startLeft = 0;
+      let startTop = 0;
+
+      function onDragStart(event) {
+        if (event.button !== 0) return;
+        isDragging = true;
+        panel.style.transform = 'translate(0, 0)';
+        const rect = panel.getBoundingClientRect();
+        startLeft = rect.left;
+        startTop = rect.top;
+        startX = event.clientX;
+        startY = event.clientY;
+        document.addEventListener('pointermove', onDragMove);
+        document.addEventListener('pointerup', onDragEnd);
+      }
+
+      function onDragMove(event) {
+        if (!isDragging) return;
+        const dx = event.clientX - startX;
+        const dy = event.clientY - startY;
+        panel.style.left = `${startLeft + dx}px`;
+        panel.style.top = `${startTop + dy}px`;
+      }
+
+      function onDragEnd() {
+        isDragging = false;
+        document.removeEventListener('pointermove', onDragMove);
+        document.removeEventListener('pointerup', onDragEnd);
+      }
+
+      titlebar.addEventListener('pointerdown', onDragStart);
+    </script>
+  </body>
+</html>
