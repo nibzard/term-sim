@@ -6,7 +6,7 @@
     <title>terminal — steel.dev</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body data-theme="dark" data-bg="image">
+  <body data-theme="dark" data-bg="image" data-logo="on" data-logo-color="white">
     <main class="wrap">
       <div class="controls" role="group" aria-label="Controls">
         <div class="theme-toggle" role="group" aria-label="Theme">
@@ -26,46 +26,60 @@
           <button type="button" class="toggle ratio-btn" data-ratio="1:1">1:1</button>
           <button type="button" class="toggle ratio-btn" data-ratio="16:9">16:9</button>
         </div>
+        <div class="export-toggle" role="group" aria-label="Export">
+          <select id="export-scale" class="bg-select" aria-label="Export scale">
+            <option value="1">1x</option>
+            <option value="2">2x</option>
+          </select>
+          <button type="button" class="toggle export-btn" id="export-btn">Export PNG</button>
+          <button type="button" class="toggle export-btn" id="copy-btn">Copy PNG</button>
+        </div>
+        <div class="logo-toggle" role="group" aria-label="Logo">
+          <button type="button" class="toggle logo-btn active" id="logo-btn" aria-pressed="true">Logo</button>
+          <button type="button" class="toggle logo-color-btn active" data-logo-color="white" aria-pressed="true">White</button>
+          <button type="button" class="toggle logo-color-btn" data-logo-color="dark" aria-pressed="false">Dark</button>
+        </div>
         <div class="bg-select-wrap" role="group" aria-label="Background preset">
           <select id="bg-select" class="bg-select" aria-label="Background preset">
-            <option value="bg-1.png">bg-1.png</option>
+            <option value="backgrounds/bg-1.png">bg-1.png</option>
           </select>
         </div>
         <label class="bg-upload" for="bg-input">Background</label>
         <input id="bg-input" class="bg-input" type="file" accept="image/*" />
       </div>
-      <section class="panel">
-        <header class="titlebar">
-          <div class="traffic">
-            <span class="dot red" aria-hidden="true"></span>
-            <span class="dot yellow" aria-hidden="true"></span>
-            <span class="dot green" aria-hidden="true"></span>
-          </div>
-          <div class="title">terminal — steel.dev</div>
-        </header>
-
-        <pre class="terminal view view-cli is-active" role="textbox" aria-label="Terminal content" contenteditable="true" spellcheck="false"></pre>
-
-        <div class="ide view view-ide" role="textbox" aria-label="IDE content">
-          <div class="ide-tabs">
-            <span class="tab active" contenteditable="true" spellcheck="false">main.rs</span>
-            <span class="tab" contenteditable="true" spellcheck="false">lib.rs</span>
-            <span class="tab" contenteditable="true" spellcheck="false">README.md</span>
-          </div>
-          <div class="ide-body">
-            <div class="ide-gutter">
-              <span>1</span>
-              <span>2</span>
-              <span>3</span>
-              <span>4</span>
-              <span>5</span>
-              <span>6</span>
-              <span>7</span>
-              <span>8</span>
-              <span>9</span>
-              <span>10</span>
+      <div class="stage" aria-label="Export stage">
+        <section class="panel">
+          <header class="titlebar">
+            <div class="traffic">
+              <span class="dot red" aria-hidden="true"></span>
+              <span class="dot yellow" aria-hidden="true"></span>
+              <span class="dot green" aria-hidden="true"></span>
             </div>
-            <pre class="ide-editor" contenteditable="true" spellcheck="false">fn main() {
+            <div class="title">terminal — steel.dev</div>
+          </header>
+
+          <pre class="terminal view view-cli is-active" role="textbox" aria-label="Terminal content" contenteditable="true" spellcheck="false"></pre>
+
+          <div class="ide view view-ide" role="textbox" aria-label="IDE content">
+            <div class="ide-tabs">
+              <span class="tab active" contenteditable="true" spellcheck="false">main.rs</span>
+              <span class="tab" contenteditable="true" spellcheck="false">lib.rs</span>
+              <span class="tab" contenteditable="true" spellcheck="false">README.md</span>
+            </div>
+            <div class="ide-body">
+              <div class="ide-gutter">
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+                <span>10</span>
+              </div>
+              <pre class="ide-editor" contenteditable="true" spellcheck="false">fn main() {
     println!("hello, steel.dev");
 }
 
@@ -77,22 +91,48 @@ struct App {
 fn greet(app: App) {
     println!("welcome {}", app.name);
 }</pre>
+            </div>
+            <div class="ide-status">
+              <span>normal</span>
+              <span>utf-8</span>
+              <span>Ln 1, Col 1</span>
+            </div>
           </div>
-          <div class="ide-status">
-            <span>normal</span>
-            <span>utf-8</span>
-            <span>Ln 1, Col 1</span>
-          </div>
-        </div>
 
-      </section>
+        </section>
+        <div class="steel-watermark" aria-hidden="true">
+          <svg width="2018" height="400" viewBox="0 0 2018 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_2086_73547)">
+              <path d="M131.847 0C59.0298 0 0 57.563 0 128.57C0 199.577 59.0298 257.141 131.847 257.141H278.343C286.434 257.141 292.993 263.537 292.993 271.426C292.993 279.317 286.434 285.711 278.343 285.711H10.2547C4.59121 285.711 0 290.19 0 295.711V389.997C0 395.52 4.59121 399.997 10.2547 399.997H278.343C351.16 399.997 410.19 342.433 410.19 271.426C410.19 200.419 351.16 142.856 278.343 142.856H131.847C123.756 142.856 117.197 136.46 117.197 128.57C117.197 120.681 123.756 114.285 131.847 114.285H380.268C380.477 114.287 380.685 114.288 380.894 114.288H424.843C432.934 114.288 439.493 120.684 439.493 128.574V390C439.493 395.523 444.083 400 449.748 400H546.434C552.099 400 556.69 395.523 556.69 390V128.574C556.69 57.5661 497.66 0.00320407 424.843 0.00320407H410.19L131.847 0Z" fill="white"/>
+              <path d="M860.809 400C828.006 400 799.676 394.43 775.82 383.289C751.962 372.148 733.137 356.694 719.345 336.927C705.926 316.802 698.099 293.442 695.862 266.847L769.668 262.534C773.022 287.332 782.342 306.379 797.626 319.677C812.909 332.974 834.342 339.623 861.928 339.623C885.411 339.623 903.49 335.49 916.163 327.224C929.21 318.598 935.734 306.2 935.734 290.026C935.734 280.323 933.311 271.697 928.464 264.151C923.619 256.603 914.3 249.597 900.508 243.127C886.716 236.657 866.214 230.369 839.002 224.259C806.199 217.071 779.92 208.984 760.163 200C740.407 190.656 726.055 179.155 717.11 165.499C708.163 151.482 703.69 134.052 703.69 113.207C703.69 90.9254 709.468 71.3388 721.022 54.4475C732.579 37.1967 748.98 23.8993 770.227 14.5552C791.475 4.85174 817.01 0 846.831 0C878.515 0 905.353 5.57052 927.346 16.7116C949.712 27.4932 967.046 42.4078 979.347 61.4555C992.021 80.5031 999.849 102.426 1002.83 127.224L929.583 130.458C926.973 109.614 918.586 92.7224 904.422 79.7844C890.256 66.8464 870.687 60.3774 845.712 60.3774C824.836 60.3774 808.249 65.0494 795.948 74.3936C784.021 83.7376 778.055 95.7772 778.055 110.512C778.055 120.934 780.479 129.56 785.324 136.388C790.543 143.217 799.676 149.146 812.723 154.178C825.769 159.209 844.033 164.241 867.519 169.272C902.931 176.819 931.074 186.163 951.948 197.304C972.824 208.087 987.734 220.845 996.68 235.579C1005.63 250.315 1010.1 267.205 1010.1 286.254C1010.1 309.614 1003.76 329.918 991.088 347.17C978.787 364.061 961.453 377.179 939.088 386.523C917.096 395.508 891.002 400 860.809 400Z" fill="white"/>
+              <path d="M1169.18 391.374C1139.36 391.374 1117.37 384.906 1103.2 371.967C1089.41 358.669 1082.51 337.645 1082.51 308.895V156.873H1035.55V103.504H1082.51V36.1185H1154.08V103.504H1232.92V156.873H1154.08V302.426C1154.08 316.083 1157.07 325.426 1163.03 330.457C1169.37 335.49 1178.68 338.005 1190.99 338.005H1232.92V391.374H1169.18Z" fill="white"/>
+              <path d="M1398.48 397.844C1368.65 397.844 1342.75 391.734 1320.76 379.515C1298.76 366.936 1281.8 349.327 1269.87 326.685C1257.94 304.044 1251.98 277.628 1251.98 247.44C1251.98 217.25 1257.94 190.835 1269.87 168.194C1281.8 145.553 1298.58 128.122 1320.2 115.903C1342.19 103.324 1367.72 97.035 1396.8 97.035C1425.13 97.035 1449.92 103.145 1471.16 115.364C1492.41 127.583 1508.81 145.193 1520.37 168.194C1532.3 191.195 1538.26 218.868 1538.26 251.212V266.847H1326.35C1327.47 292.004 1334.55 311.05 1347.59 323.99C1360.64 336.567 1377.79 342.857 1399.03 342.857C1431.47 342.857 1452.15 329.56 1461.1 302.965L1534.35 307.278C1526.15 335.31 1509.93 357.412 1485.7 373.584C1461.84 389.757 1432.77 397.844 1398.48 397.844ZM1326.35 220.485H1464.45C1462.59 197.125 1455.51 179.875 1443.21 168.733C1431.28 157.233 1415.81 151.482 1396.8 151.482C1377.42 151.482 1361.57 157.412 1349.27 169.272C1336.97 181.132 1329.33 198.204 1326.35 220.485Z" fill="white"/>
+              <path d="M1714.98 397.844C1685.16 397.844 1659.25 391.734 1637.26 379.515C1615.27 366.936 1598.31 349.327 1586.38 326.685C1574.45 304.044 1568.49 277.628 1568.49 247.44C1568.49 217.25 1574.45 190.835 1586.38 168.194C1598.31 145.553 1615.08 128.122 1636.7 115.903C1658.69 103.324 1684.23 97.035 1713.3 97.035C1741.64 97.035 1766.43 103.145 1787.67 115.364C1808.91 127.583 1825.32 145.193 1836.87 168.194C1848.8 191.195 1854.77 218.868 1854.77 251.212V266.847H1642.85C1643.97 292.004 1651.05 311.05 1664.1 323.99C1677.15 336.567 1694.29 342.857 1715.54 342.857C1747.97 342.857 1768.66 329.56 1777.6 302.965L1850.85 307.278C1842.64 335.31 1826.43 357.412 1802.21 373.584C1778.35 389.757 1749.28 397.844 1714.98 397.844ZM1642.85 220.485H1780.96C1779.09 197.125 1772.01 179.875 1759.71 168.733C1747.78 157.233 1732.31 151.482 1713.3 151.482C1693.92 151.482 1678.08 157.412 1665.78 169.272C1653.47 181.132 1645.83 198.204 1642.85 220.485Z" fill="white"/>
+              <path d="M1974.51 400C1952.52 400 1935.37 393.39 1922.32 382.609C1909.64 371.828 1902.26 347.17 1902.26 323.45V0H1973.83V316.442C1973.83 330.817 1981.28 338.005 1996.2 338.005H2018V400H1974.51Z" fill="white"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_2086_73547">
+                <rect width="2018" height="400" fill="white"/>
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </main>
 
+    <script src="embedded-backgrounds.js"></script>
+    <script src="vendor/html-to-image.js"></script>
     <script>
       const themeButtons = document.querySelectorAll('.toggle[data-theme]');
       const body = document.body;
       const bgInput = document.getElementById('bg-input');
       const bgSelect = document.getElementById('bg-select');
+      const exportBtn = document.getElementById('export-btn');
+      const copyBtn = document.getElementById('copy-btn');
+      const exportScale = document.getElementById('export-scale');
+      const logoBtn = document.getElementById('logo-btn');
+      const logoColorButtons = document.querySelectorAll('.logo-color-btn');
+      const stage = document.querySelector('.stage');
       const panel = document.querySelector('.panel');
       const titlebar = document.querySelector('.titlebar');
       const terminal = document.querySelector('.terminal');
@@ -103,6 +143,7 @@ fn greet(app: App) {
       const ideView = document.querySelector('.view-ide');
       const ideEditor = document.querySelector('.ide-editor');
       const ideGutter = document.querySelector('.ide-gutter');
+      const embeddedBackgrounds = window.TERM_SIM_EMBEDDED_BACKGROUNDS || {};
       let fontSize = 18;
 
       const initialTerminal = [
@@ -157,10 +198,16 @@ fn greet(app: App) {
 
       let activeRatio = '16:9';
 
+      const EXPORT_SIZES = {
+        '3:4': { width: 1080, height: 1440 },
+        '1:1': { width: 1080, height: 1080 },
+        '16:9': { width: 1920, height: 1080 },
+      };
+
       function applyRatio(ratio) {
         const [w, h] = ratio.split(':').map(Number);
-        const maxWidth = Math.min(window.innerWidth * 0.9, 1000);
-        const maxHeight = window.innerHeight * 0.7;
+        const maxWidth = Math.min(window.innerWidth * 0.95, 1200);
+        const maxHeight = window.innerHeight * 0.78;
         const ratioValue = w / h;
         let width = maxWidth;
         let height = width / ratioValue;
@@ -168,8 +215,23 @@ fn greet(app: App) {
           height = maxHeight;
           width = height * ratioValue;
         }
-        panel.style.width = `${Math.round(width)}px`;
-        panel.style.height = `${Math.round(height)}px`;
+        stage.style.width = `${Math.round(width)}px`;
+        stage.style.height = `${Math.round(height)}px`;
+        stage.setAttribute('data-ratio', ratio);
+      }
+
+      function updateExportLabels() {
+        if (!exportBtn) return;
+        const scale = Number(exportScale?.value || 1);
+        const preset = EXPORT_SIZES[activeRatio];
+        if (!preset) {
+          exportBtn.textContent = 'Export PNG';
+          return;
+        }
+        const w = preset.width * scale;
+        const h = preset.height * scale;
+        exportBtn.textContent = `Export PNG (${w}×${h})`;
+        if (copyBtn) copyBtn.textContent = `Copy PNG (${w}×${h})`;
       }
 
       ratioButtons.forEach((btn) => {
@@ -178,6 +240,7 @@ fn greet(app: App) {
           btn.classList.add('active');
           activeRatio = btn.dataset.ratio;
           applyRatio(activeRatio);
+          updateExportLabels();
         });
       });
 
@@ -188,6 +251,8 @@ fn greet(app: App) {
         applyRatio(activeRatio);
       }
       window.addEventListener('resize', () => applyRatio(activeRatio));
+      updateExportLabels();
+      exportScale?.addEventListener('change', updateExportLabels);
 
       function setTheme(theme) {
         body.setAttribute('data-theme', theme);
@@ -202,16 +267,60 @@ fn greet(app: App) {
 
       setTheme('dark');
 
-      bgInput.addEventListener('change', (event) => {
+      function setLogo(enabled) {
+        body.setAttribute('data-logo', enabled ? 'on' : 'off');
+        if (!logoBtn) return;
+        logoBtn.classList.toggle('active', enabled);
+        logoBtn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+      }
+
+      function setLogoColor(color) {
+        body.setAttribute('data-logo-color', color);
+        logoColorButtons.forEach((btn) => {
+          const isActive = btn.dataset.logoColor === color;
+          btn.classList.toggle('active', isActive);
+          btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      }
+
+      logoBtn?.addEventListener('click', () => {
+        const enabled = body.getAttribute('data-logo') !== 'off';
+        setLogo(!enabled);
+      });
+
+      logoColorButtons.forEach((btn) => {
+        btn.addEventListener('click', () => setLogoColor(btn.dataset.logoColor));
+      });
+
+      setLogo(body.getAttribute('data-logo') !== 'off');
+      setLogoColor(body.getAttribute('data-logo-color') || 'white');
+
+      function blobToDataURL(blob) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onerror = () => reject(reader.error || new Error('Failed to read file'));
+          reader.onloadend = () => resolve(String(reader.result || ''));
+          reader.readAsDataURL(blob);
+        });
+      }
+
+      bgInput.addEventListener('change', async (event) => {
         const file = event.target.files && event.target.files[0];
         if (!file) return;
-        const url = URL.createObjectURL(file);
-        body.style.setProperty('--bg-image', `url("${url}")`);
+        const dataUrl = await blobToDataURL(file);
+        body.style.setProperty('--bg-image', `url("${dataUrl}")`);
         body.setAttribute('data-bg', 'image');
       });
 
+      function resolveBackgroundSrc(src) {
+        const embedded = embeddedBackgrounds && embeddedBackgrounds[src];
+        // When opened from file://, html-to-image cannot fetch local assets; use embedded data URLs.
+        if (embedded && location.protocol === 'file:') return embedded;
+        return src;
+      }
+
       function setBackground(src) {
-        body.style.setProperty('--bg-image', `url("${src}")`);
+        body.style.setProperty('--bg-image', `url("${resolveBackgroundSrc(src)}")`);
         body.setAttribute('data-bg', 'image');
       }
 
@@ -219,21 +328,25 @@ fn greet(app: App) {
         setBackground(event.target.value);
       });
 
+      // Ensure the default preset is export-safe when opened from file://.
+      setBackground(bgSelect.value);
+
       function tryAddBackgrounds() {
         const max = 12;
         const existing = new Set(Array.from(bgSelect.options).map((opt) => opt.value));
         for (let i = 2; i <= max; i += 1) {
           const name = `bg-${i}.png`;
-          if (existing.has(name)) continue;
+          const path = `backgrounds/${name}`;
+          if (existing.has(path)) continue;
           const img = new Image();
           img.onload = () => {
             const option = document.createElement('option');
-            option.value = name;
+            option.value = path;
             option.textContent = name;
             bgSelect.appendChild(option);
           };
           img.onerror = () => {};
-          img.src = name;
+          img.src = path;
         }
       }
 
@@ -279,10 +392,13 @@ fn greet(app: App) {
       function onDragStart(event) {
         if (event.button !== 0) return;
         isDragging = true;
-        panel.style.transform = 'translate(0, 0)';
+        const stageRect = stage.getBoundingClientRect();
         const rect = panel.getBoundingClientRect();
-        startLeft = rect.left;
-        startTop = rect.top;
+        startLeft = rect.left - stageRect.left;
+        startTop = rect.top - stageRect.top;
+        panel.style.left = `${startLeft}px`;
+        panel.style.top = `${startTop}px`;
+        panel.style.transform = 'translate(0, 0)';
         startX = event.clientX;
         startY = event.clientY;
         document.addEventListener('pointermove', onDragMove);
@@ -304,6 +420,90 @@ fn greet(app: App) {
       }
 
       titlebar.addEventListener('pointerdown', onDragStart);
+
+      function canCopyToClipboard() {
+        return !!(navigator.clipboard && window.ClipboardItem);
+      }
+
+      function getExportFilename() {
+        const ratioSlug = String(activeRatio || 'custom').replace(':', 'x');
+        const theme = body.getAttribute('data-theme') || 'theme';
+        const view = document.querySelector('.view.is-active')?.classList.contains('view-ide') ? 'ide' : 'cli';
+        const now = new Date();
+        const stamp = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+        return `term-sim_${view}_${theme}_${ratioSlug}_${stamp}.png`;
+      }
+
+      async function renderStagePngBlob() {
+        if (!window.htmlToImage || !htmlToImage.toBlob) {
+          throw new Error('Export library not loaded');
+        }
+        const scale = Number(exportScale?.value || 1);
+        const preset = EXPORT_SIZES[activeRatio];
+        const width = (preset?.width || 1920) * scale;
+        const height = (preset?.height || 1080) * scale;
+
+        body.classList.add('is-exporting');
+        try {
+          const backgroundColor = getComputedStyle(stage).backgroundColor;
+          const blob = await htmlToImage.toBlob(stage, {
+            pixelRatio: 1,
+            canvasWidth: width,
+            canvasHeight: height,
+            backgroundColor,
+            skipFonts: true,
+          });
+          if (!blob) throw new Error('Failed to render image');
+          return blob;
+        } finally {
+          body.classList.remove('is-exporting');
+        }
+      }
+
+      function setExportBusy(busy) {
+        if (exportBtn) exportBtn.disabled = busy;
+        if (copyBtn) copyBtn.disabled = busy || !canCopyToClipboard();
+        if (exportScale) exportScale.disabled = busy;
+      }
+
+      if (copyBtn) {
+        copyBtn.disabled = !canCopyToClipboard();
+        if (!canCopyToClipboard()) copyBtn.title = 'Clipboard copy not supported in this browser';
+      }
+
+      exportBtn?.addEventListener('click', async () => {
+        try {
+          setExportBusy(true);
+          const blob = await renderStagePngBlob();
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = getExportFilename();
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+        } catch (err) {
+          console.error(err);
+          alert('Export failed. Check the console for details.');
+        } finally {
+          setExportBusy(false);
+        }
+      });
+
+      copyBtn?.addEventListener('click', async () => {
+        if (!canCopyToClipboard()) return;
+        try {
+          setExportBusy(true);
+          const blob = await renderStagePngBlob();
+          await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        } catch (err) {
+          console.error(err);
+          alert('Copy failed. Check the console for details.');
+        } finally {
+          setExportBusy(false);
+        }
+      });
     </script>
   </body>
 </html>
